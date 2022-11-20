@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>Foxhole Interactive Tactical Maps | Map</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="  crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+	<link rel="stylesheet" href="css/font54v1.css"/>
+	<link rel="stylesheet" href="css/leaflet.toolbar.css"/>
+	<link rel="stylesheet" href="css/leaflet-sidebar.css"/>
+	<link rel="stylesheet" href="css/colorpicker.css" />
+	<link rel="stylesheet" href="css/custom.css?version=11" />
+	
+	<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>	
+	<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+
+	<script src="js/colorpicker.js"></script>
+	
+	<script>
+	  // Initialize Firebase
+	  var config = {
+		apiKey: "AIzaSyC2kdxg5u8Z7bFBO-sPEEcdKfoM4ZEL2M8",
+		authDomain: "foxhole-69465.firebaseapp.com",
+		databaseURL: "https://foxhole-69465.firebaseio.com",
+		storageBucket: "foxhole-69465.appspot.com",
+		messagingSenderId: "634491426964"
+	  };
+	  firebase.initializeApp(config);
+	</script>
+
+	<style>
+       
+	</style>
+
+	
+</head>
+<body>
+
+<div id="sidebar" class="sidebar collapsed">
+        <!-- Nav tabs -->
+        <div class="sidebar-tabs">
+            <ul role="tablist">
+				<li><a href="list.html" role="tab" title="Return to Map List"><i class="icon-Files2"></i></a></li>
+                <li><a href="#news" role="tab" title="Map Information"><i class="icon-Document-File"></i></a></li>
+                <li><a href="#users" role="tab" title="Connected Users"><i class="icon-Networking-2"></i></a></li>
+				<li><a href="#share" role="tab" title="Share Link"><i class="icon-Link"></i></a></li>
+                <li class="disabled user-authorised"><a href="#messages" role="tab" title="Messages"><i class="icon-Chat-Buble3"></i></a></li>
+				<li class="user-authorised"><a id="mapSwap" href="#maps" role="tab" title="Map Select"><i class="icon-Map-1"></i></a></li>
+				<li class="user-authorised"><a id="markerMode" href="#markers" role="tab" title="Marker Tool"><i class="icon-Map-Pin1"></i></a></li>
+				<li class="user-authorised"><a id="labelMode" href="#labels" role="tab" title="Text Tool"><i class="icon-Text-box"></i></a></li>
+                <li class="user-authorised"><a id="lineMode" href="#lines" role="tab" title="Line Tool"><i class="icon-Pencil-tool"></i></a></li>
+				<li class="user-authorised"><a id="eraserMode" href="#" role="tab" title="Erase Tool"><i class="icon-Eraser-Tool"></i></a></li>
+				<li class="user-authorised"><a id="normalMode" href="#" role="tab" title="Drag Tool"><i class="icon-Open-Hand"></i></a></li>
+				<li class="user-authorised"><a id="clearAll" href="#" role="tab" title="Clear Map"><i class="icon-Trashcan"></i></a></li>		
+            </ul>
+
+            <ul role="tablist">
+				<li><a href="https://www.reddit.com/r/foxholegame/comments/5wo8xo/foxhole_tactical_whiteboard_update/" role="tab" target="_blank" title="Reddit Thread"><i class="icon-Reddit"></i></a></li>    
+			    <li><a href="http://www.foxholegame.com/" role="tab" target="_blank" title="Foxhole Website"><i class="icon-Fox"></i></a></li>
+                <li class="user-authorised"><a href="#settings" role="tab" title="Settings"><i class="icon-Gear-12"></i></a></li>
+				<li class="user-authorised"><a id="signOut" href="#" role="tab" title="Logout"><i class="icon-Exit-1"></i></a></li>
+            </ul>
+        </div>
+
+        <!-- Tab panes -->
+        <div class="sidebar-content">
+            <div class="sidebar-pane" id="news">
+                <h1 class="sidebar-header">
+                    Map Information
+                    <span class="sidebar-close"><i class="icon-Left-11"></i></span>
+                </h1>
+				<p>
+					<div class="panel panel-default">
+					  <div class="panel-body">
+						Welcome to the Test Map, i am currently testing out new control menus and styles in order to maximise useability of the map.
+					  </div>
+					  
+					</div>
+				</p>
+				<p>
+					<div class="panel panel-default">
+					  <div class="panel-body">
+						<div class="input-group">
+						  <span class="input-group-addon" id="basic-addon1">Title</span>
+						  <input id="mapTitle" type="text" class="form-control" aria-describedby="Map Title">
+						</div>		
+					  </div>
+					  
+					</div>
+				</p>
+
+            </div>
+            <div class="sidebar-pane" id="share">
+                <h1 class="sidebar-header">Share Link<span class="sidebar-close"><i class="icon-Left-11"></i></span></h1>
+				<p>
+					<div class="input-group">
+						<span class="input-group-addon" id="shareLink-addon"><i class="icon-Link"></i></span>
+						<input id="shareLink" type="text" class="form-control" aria-describedby="share-link">
+					</div>
+				</p>
+            </div>
+            <div class="sidebar-pane" id="labels">
+                <h1 class="sidebar-header">Label Tool<span class="sidebar-close"><i class="icon-Left-11"></i></span></h1>
+				<p>
+					<div id="labelGroup" class="input-group">
+						<span class="input-group-addon" id="labelText-addon">Label Text</span>
+						<input id="labelText" type="text" class="form-control" aria-describedby="Label Text">
+					</div>
+				</p>
+            </div>	
+            <div class="sidebar-pane" id="users">
+                <h1 class="sidebar-header">Connected Users<span class="sidebar-close"><i class="icon-Left-11"></i></span></h1>
+				<p>
+					<ul id="owner-list" class="list-group">
+
+					</ul>
+					<ul id="white-list" class="list-group">
+
+					</ul>
+					<ul id="user-list" class="list-group">
+
+					</ul>
+					<ul id="anon-list" class="list-group">
+
+					</ul>
+				</p>
+            </div>
+
+            <div class="sidebar-pane user-authorised" id="messages">
+                <h1 class="sidebar-header">Messages<span class="sidebar-close"><i class="icon-Left-11"></i></span></h1>
+            </div>
+			
+			<div class="sidebar-pane user-authorised" id="maps">
+                <h1 class="sidebar-header">Map Select<span class="sidebar-close"><i class="icon-Left-11"></i></span></h1>
+				<p>
+						Regions
+				</p>
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="callahans">
+					  <div class="panel-body callahans">
+						Callahan's Passage
+					  </div>					  
+					</div>
+				</p>
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="deadlands">
+					  <div class="panel-body deadlands">
+						The Deadlands
+					  </div>					  
+					</div>
+				</p>
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="endlessshore">
+					  <div class="panel-body endlessshore">
+						Endless Shore
+					  </div>					  
+					</div>
+				</p>
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="farranaccoast">
+					  <div class="panel-body farranaccoast">
+						Farranac Coast
+					  </div>					  
+					</div>
+				</p>
+				
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="heartlands">
+					  <div class="panel-body heartlands">
+						Upper Heartlands
+					  </div>					  
+					</div>
+				</p>
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="mooringcounty_icons">
+					  <div class="panel-body mooringcounty_icons">
+						Mooring County
+					  </div>					  
+					</div>
+				</p>				
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="umbralwoods">
+					  <div class="panel-body umbralwoods">
+						Umbral Woods
+					  </div>					  
+					</div>
+				</p>
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="weatheredexpanse">
+					  <div class="panel-body weatheredexpanse">
+						Weathered Expanse
+					  </div>					  
+					</div>
+				</p>
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="westgate">
+					  <div class="panel-body westgate">
+						Westgate
+					  </div>					  
+					</div>
+				</p>
+						Skirmish
+				</p>
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="fishermansrow">
+					  <div class="panel-body fishermansrow">
+						Fisherman's Row
+					  </div>					  
+					</div>
+				</p>	
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="reachingtrail_icons">
+					  <div class="panel-body reachingtrail_icons">
+						Reaching Trail
+					  </div>					  
+					</div>
+				</p>
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="tempestisland">
+					  <div class="panel-body tempestisland">
+						Tempest Island
+					  </div>					  
+					</div>
+				</p>
+            </div>
+			
+            <div class="sidebar-pane user-authorised" id="markers">
+                <h1 class="sidebar-header">Marker Tool<span class="sidebar-close"><i class="icon-Left-11"></i></span></h1>
+				<p></p>
+				<p class="icon-container">
+					<img class="img-thumbnail mapMarker" data-type="townhall" data-popup="Town Hall" src="icons/TownHall.png" ></img>
+					<img class="img-thumbnail mapMarker" data-type="salvage" data-popup="Scrap" src="icons/SalvageMapIcon.png" ></img>					
+					<img class="img-thumbnail mapMarker" data-type="components" data-popup="Components" src="icons/MapIconComponents.png" ></img>
+					<img class="img-thumbnail mapMarker" data-type="armory" data-popup="Armory" src="icons/MapIconArmory.png" ></img>
+					<img class="img-thumbnail mapMarker" data-type="supply" data-popup="Supply Station" src="icons/MapIconSupplies.png" ></img>				
+				</p>
+				<p class="icon-container">
+					<img class="img-thumbnail mapMarker" data-type="fuel" data-popup="Fuel" src="icons/MapIconFuel.png" ></img>
+					<img class="img-thumbnail mapMarker" data-type="workshop" data-popup="Workshop" src="icons/MapIconWorkshop.png" ></img>
+					<img class="img-thumbnail mapMarker" data-type="vehicle" data-popup="Vehicle Factory" src="icons/MapIconVehicle.png" ></img>
+					<img class="img-thumbnail mapMarker" data-type="plant" data-popup="Manufacturing Plant" src="icons/MapIconManufacturing.png" ></img>
+					<img class="img-thumbnail mapMarker" data-type="medical" data-popup="Hospital" src="icons/MapIconHospital.png" ></img>
+				</p>
+				<p>
+					<div class="panel panel-default">
+					  <div class="panel-body">
+						<p>Select a Marker and click on the map to place, every click will place another marker.</p>
+						<p>Clicking the hand icon will return to normal.</p>
+					  </div> 
+					</div>
+				</p>
+            </div>
+
+            <div class="sidebar-pane user-authorised" id="lines">
+                <h1 class="sidebar-header">Draw Tool<span class="sidebar-close"><i class="icon-Left-11"></i></span></h1>
+				<p>
+					<span id="colorpickerHolder"></span>
+				</p>
+				<p>
+					<div class="panel panel-default">
+					  <div class="panel-body">
+						<p>Select a colour and click <span style="display:inline-block;width: 14px;height: 14px;background: url(images/colorpicker_submit.png) top;background-size: cover;"><span></p>
+					  </div> 
+					</div>
+				</p>
+				<p class="icon-container">
+					<img  class="img-thumbnail dashPattern" data-pattern="[]" src="icons/dashSolid.png"></img>
+					<img  class="img-thumbnail dashPattern" data-pattern="[1,5]" src="icons/dashDots.png"></img>
+					<img  class="img-thumbnail dashPattern" data-pattern="[5,5]" src="icons/dashDash.png"></img>
+					<img  class="img-thumbnail dashPattern" data-pattern="[5, 10]" src="icons/dashWideDash.png"></img>
+					<img  class="img-thumbnail dashPattern" data-pattern="[5, 5, 1, 5]" src="icons/dashDashDot.png"></img>
+				</p>
+				<p class="icon-container">
+					<img  class="img-thumbnail dashSize" data-size="1" src="icons/size1.png"></img>
+					<img  class="img-thumbnail dashSize" data-size="3" src="icons/size2.png"></img>
+					<img  class="img-thumbnail dashSize" data-size="5" src="icons/size3.png"></img>
+					<img  class="img-thumbnail dashSize" data-size="10" src="icons/size4.png"></img>
+					<img  class="img-thumbnail dashSize" data-size="15" src="icons/size5.png"></img>
+				</p>
+				<p>
+					<div class="panel panel-default">
+					  <div class="panel-body">
+						<p>Click and hold on the map to draw.</p>
+						<p>Clicking the hand icon will return to normal.</p>
+					  </div> 
+					</div>
+				</p>
+            </div>
+			
+            <div class="sidebar-pane user-authorised" id="settings">
+                <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="icon-Left-11"></i></span></h1>
+				<p>
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<span id="settings-username"></span>
+						</div> 
+					</div>
+				</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="map" class="sidebar-map"></div>
+	
+	
+	
+	<!-- Update modal -->
+	<div class="modal fade" id="update-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	  <div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Update Available</h4>
+			</div>
+			<div class="modal-body">
+				<p>There is an update ready, please reload the page to use it!</p>
+			</div>
+		</div>
+	  </div>
+	</div>
+
+
+	<script src="js/leaflet-sidebar.js"></script>
+	<script type="text/javascript">
+
+  window.addEventListener('load', function() {
+	initApp()
+  });
+  
+  initApp = function() {
+  
+	if(!map)
+	{
+		var map = L.map('map', {
+			crs: L.CRS.Simple,
+			minZoom: -2,
+		});	
+	}
+  
+  function getURLParameter(name) {
+	  return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
+	}
+	
+	function msToTime(s) {
+		// Pad to 2 or 3 digits, default is 2
+	  var pad = (n, z = 2) => ('00' + n).slice(-z);
+	  return pad(s/3.6e6|0) + ':' + pad((s%3.6e6)/6e4 | 0) + ':' + pad((s%6e4)/1000|0);
+	}
+	
+	var mid = getURLParameter('map');
+  
+	$('#shareLink').attr('value','https://waipahe.co.uk/foxhole/map.html?map='+mid)
+	
+	
+	//Vars
+	var uid,
+		mk_townhall ={},
+		mk_components ={},
+		mk_salvage ={},
+		mk_fuel ={},
+		mk_supply ={},
+		mk_workshop ={},
+		mk_vehicle ={},
+		mk_medical ={},
+		mk_armory ={},
+		mk_plant ={},
+		lb_placenames ={},
+		mk_custom ={},
+		li_custom ={},
+		ar_custom ={},
+		lb_custom ={},
+		mk_user ={};
+		
+	var layerControl = false;	
+	var deleteNow = false;
+	var arriveTime = Date.now();
+	var to_user = [];
+	var database = firebase.database();
+	var mapName,mapTitle;
+	var baseMaps ={};
+	var overlays = {
+		"Town Halls": "mk_townhall",
+		"Components": "mk_components",
+		"Salvage": "mk_salvage",
+		"Fuel": "mk_fuel",
+		"Supply": "mk_supply",
+		"Workshop": "mk_workshop",
+		"Vehicle": "mk_vehicle",
+		"Medical": "mk_medical",
+		"Armory": "mk_armory",
+		"Plant": "mk_plant",
+		"Place Names": "lb_placenames",
+		"Custom Markers": "mk_custom",
+		"Custom Lines": "li_custom",
+		//"Custom Areas": "ar_custom",
+		"Custom Labels": "lb_custom",
+		"User Makers": "mk_user"
+	};
+
+
+
+	//custom icons 
+	var icon_townhall = L.icon({
+		iconUrl: 'icons/TownHall.png',
+		iconSize: [36, 36],
+		iconAnchor: [18, 18],
+		popupAnchor: [0, 0]
+	});
+	var icon_salvage = L.icon({
+		iconUrl: 'icons/SalvageMapIcon.png',
+		iconSize: [36, 36],
+		iconAnchor: [18, 18],
+		popupAnchor: [0, 0]
+	});
+	var icon_components = L.icon({
+		iconUrl: 'icons/MapIconComponents.png',
+		iconSize: [36, 36],
+		iconAnchor: [18, 18],
+		popupAnchor: [0, 0]
+	});
+	var icon_armory = L.icon({
+		iconUrl: 'icons/MapIconArmory.png',
+		iconSize: [36, 36],
+		iconAnchor: [18, 18],
+		popupAnchor: [0, 0]
+	});
+	var icon_supply = L.icon({
+		iconUrl: 'icons/MapIconSupplies.png',
+		iconSize: [36, 36],
+		iconAnchor: [18, 18],
+		popupAnchor: [0, 0]
+	});
+	var icon_fuel = L.icon({
+		iconUrl: 'icons/MapIconFuel.png',
+		iconSize: [36, 36],
+		iconAnchor: [18, 18],
+		popupAnchor: [0, 0]
+	});
+	var icon_workshop = L.icon({
+		iconUrl: 'icons/MapIconWorkshop.png',
+		iconSize: [36, 36],
+		iconAnchor: [18, 18],
+		popupAnchor: [0, 0]
+	});
+	var icon_factory = L.icon({
+		iconUrl: 'icons/MapIconFactory.png',
+		iconSize: [36, 36],
+		iconAnchor: [18, 18],
+		popupAnchor: [0, 0]
+	});
+	var icon_plant = L.icon({
+		iconUrl: 'icons/MapIconManufacturing.png',
+		iconSize: [36, 36],
+		iconAnchor: [18, 18],
+		popupAnchor: [0, 0]
+	});
+	
+	var icon_medical = L.icon({
+		iconUrl: 'icons/MapIconHospital.png',
+		iconSize: [36, 36],
+		iconAnchor: [18, 18],
+		popupAnchor: [0, 0]
+	});
+	
+	var icon_vehicle = L.icon({
+		iconUrl: 'icons/MapIconVehicle.png',
+		iconSize: [36, 36],
+		iconAnchor: [18, 18],
+		popupAnchor: [0, 0]
+	});	
+		
+
+
+	database.ref("system/update/").on('value', function(snapshot) {
+		var data = snapshot.val();
+		if(arriveTime<data)
+		{
+		 $('#update-modal').modal("show");
+		}
+	});
+		
+	var southWest = L.latLng(0, 0),
+		northEast = L.latLng(397,1500),
+		bounds = L.latLngBounds(southWest, northEast);
+
+	var image = L.imageOverlay("images/foxholelogo.png", bounds).addTo(map);
+		map.fitBounds(bounds);
+
+	var sidebar = L.control.sidebar('sidebar').addTo(map);	
+	
+
+	
+	firebase.auth().onAuthStateChanged(function(user) {
+	  if (user) {
+		// User is signed in.
+		var displayName = user.displayName;
+		var photoURL = user.photoURL;
+		var userCount = 0;
+		uid = user.uid;
+		$('#settings-username').html(displayName);
+	
+		database.ref("customMaps/"+mid+"/users/"+uid).set({"name":displayName,"x" : -110,"y" : -100 ,"time":+ new Date()});
+		
+		database.ref("customMaps/"+mid+"/users/"+uid).onDisconnect().remove();
+		
+		var popup = L.popup();
+		
+		var thisLatLng;
+		var polyLine = [];
+		var i = 0;
+		var key;	
+		
+		//--------------------------
+		//Data creation functions
+		//--------------------------
+		
+		
+		//Line drawing, point to point
+		function onMapLine(e) {
+				if(i==0)
+				{
+					thisLatLng = e.latlng;
+					polyLine[i] = thisLatLng;
+					i++
+					database.ref("customMaps/"+mid+"/lines/").push({'data':polyLine,'color':lineColor,'dash':dashAr})
+					  .then((snap) => {
+						 key = snap.key 
+					  });
+				}
+				else
+				{
+					if(thisLatLng&&thisLatLng.lat==e.latlng.lat&&thisLatLng.lng==e.latlng.lng)
+					{		
+											
+						clearPolyLine();
+						map.off('click', onMapLine);	
+					}
+					else
+					{				
+						thisLatLng = e.latlng;
+						polyLine[i] = thisLatLng;
+						i++
+						database.ref("customMaps/"+mid+"/lines/"+key).set(polyLine)
+					}	
+				}			
+			
+				
+		}
+		
+		//Adding Markers where clicked
+		var markerType = "missing";
+		var markerPopup = "Oops! something is missing.";
+		function onMapMarker(e) {	
+				var newMarker =  {	"user": displayName, "uid":uid, "type" : markerType,    "popup" : markerPopup,    "x" : e.latlng.lng,    "y" : e.latlng.lat  };
+				database.ref("customMaps/"+mid+"/markers/").push(newMarker);
+		}
+		
+		//Adding Labels
+		var labelText = "";
+		
+		$('#labelText').focus(function(){
+			$('#labelGroup').removeClass('has-error')
+		});	
+		
+		
+		function onMapLabel(e) {	
+			labelText = $('#labelText').val();
+			if(labelText!="")
+			{				
+				var newLabel =  {"user": displayName, "uid":uid,  "placename" : labelText,  "x" : e.latlng.lng,    "y" : e.latlng.lat  };
+				database.ref("customMaps/"+mid+"/labels/").push(newLabel);
+			}
+			else
+			{
+				$('#labelGroup').addClass('has-error')
+			}
+		}
+		
+		//Clear line array to be safe
+		function clearPolyLine() {	
+						i = 0;
+						key=null; 
+						polyLine = [];
+		}
+		
+		//location tracking
+		var mm=0;	
+		map.on('mousemove',  function(e) {
+			if(mm>=10){
+				mm=0;
+				database.ref("customMaps/"+mid+"/users/"+uid).set({"name":displayName,"x" : e.latlng.lng,"y" : e.latlng.lat,"time":+ new Date()});
+			}
+			++mm;
+		} );
+		
+		//Pen Drawing after click and while mouse moves.
+		var md=0;
+		function onMapPen(e){		
+				map.on('mousemove', drawOnMove);
+				map.dragging.disable();
+				L.DomUtil.disableImageDrag()
+		}
+		
+		function offMapPen(e){		
+				map.off('mousemove', drawOnMove);	
+				map.dragging.enable();			
+				clearPolyLine();		
+		}
+			
+		var lineColor='#000'
+		var dashAr = [];
+		var size = 5;
+		
+		function drawOnMove(e){ 
+
+				if(polyLine.length==0)
+				{		
+					clearPolyLine();
+					thisLatLng = e.latlng;
+					polyLine[i] = thisLatLng;
+					i++;
+					database.ref("customMaps/"+mid+"/lines/").push({'data':polyLine,'color':lineColor,'dash':dashAr,'weight':size})
+					  .then((snap) => {
+						 key = snap.key 
+					  });
+				}
+				else
+				{	
+					if(md>=10){										
+						thisLatLng = e.latlng;
+						polyLine[i] = thisLatLng;
+						database.ref("customMaps/"+mid+"/lines/"+key).set({'data':polyLine,'color':lineColor,'dash':dashAr,'weight':size})
+						md=0;
+						++i;				
+					}
+					++md;				
+				}			
+		}	
+		
+		//Custom controls
+		
+		function resetTools(){
+			$('#map').css( 'cursor', '' );
+				map.off('mousedown', onMapPen);
+				map.off('mouseup', offMapPen);
+				map.off('click', onMapMarker);
+				map.off('click', onMapLabel);
+				map.dragging.enable();	
+				deleteNow = false;			
+				clearPolyLine();			
+		}
+		
+		function eraserTool(){
+			if(deleteNow)
+			{
+				deleteNow = false;
+				map.dragging.enable();		
+			}
+			else
+			{	
+				map.dragging.disable();
+				L.DomUtil.disableImageDrag()
+				deleteNow = true;
+				
+			}			
+		}
+		
+		$('#users').on('click','.addWL',function(){	
+			key = $(this).data('whitelist');
+			whitelisted = $(this).data('whitelisted');
+			if(whitelisted)
+			{
+				$(this).data('whitelisted',false);
+				database.ref("customMaps/"+mid+"/admin/whitelist/"+key).remove();
+				database.ref("users/"+key+"/shared/"+mid).remove();
+			}
+			else
+			{
+				$(this).data('whitelisted',true);
+				database.ref("customMaps/"+mid+"/admin/whitelist/"+key).set(true);
+				database.ref("users/"+key+"/shared/"+mid).set({"map": mapName,"title":mapTitle});
+			}
+
+		});
+
+		
+		function clearAll(){
+				database.ref("customMaps/"+mid+"/lines/").remove();
+				database.ref("customMaps/"+mid+"/markers/").remove();
+				database.ref("customMaps/"+mid+"/labels/").remove();
+				resetTools();	
+				sidebar.close();
+		}
+					
+		
+		$('img.mapMarker').click(function(){
+				resetTools();
+				$('#map').css( 'cursor', 'crosshair' );
+				map.on('click', onMapMarker);
+				map.off('mousedown', onMapPen);
+				map.off('mouseup', offMapPen);
+				markerType=$(this).data('type');
+				markerPopup=$(this).data('popup');				
+		});
+		
+		$('img.dashPattern').click(function(){
+			dashAr = $(this).data('pattern');
+		});
+		
+		$('img.dashSize').click(function(){
+			size = $(this).data('size');
+		});
+		
+		$('div.mapSelect').click(function(){		
+			if (confirm('Changing the map will clear everything, Are you sure you want to clear all markers and lines?')) {	
+				clearAll();
+				
+				database.ref("customMaps/"+mid+"/admin/map/").set($(this).data('map'));		
+			} else {
+				sidebar.close();
+			}	
+		});
+		
+		$('#colorpickerHolder').ColorPicker(
+			{
+			color:'000000',
+			flat: true,
+			onSubmit: function(hsb, hex, rgb) {
+				$('.icon-Pencil-tool').css('color', '#' + hex);
+				lineColor = '#'+hex;
+			},
+			onChange: function (hsb, hex, rgb) {
+			}	
+		});
+		
+		var lineClicked = false;
+		
+		$('#lineMode').click(function(){
+				resetTools();
+				$('#map').css( 'cursor', 'crosshair' );
+				map.on('mousedown', onMapPen);
+				map.on('mouseup', offMapPen);
+				lineClicked = true;
+		});
+		
+		$('#labelMode').click(function(){
+				resetTools();
+				$('#map').css( 'cursor', 'crosshair' );
+				map.on('click', onMapLabel);
+		});
+		
+		$('#eraserMode').click(function(){
+				$('#map').css( 'cursor', 'crosshair' );
+				resetTools();
+				eraserTool();
+				sidebar.close();
+		});
+		
+		$('#normalMode').click(function(){
+				resetTools();
+				sidebar.close();
+		});
+		
+		$('#clearAll').click(function(){
+			if (confirm('Are you sure you want to clear all markers and lines?')) {
+				clearAll();
+			} else {
+				sidebar.close();
+			}				
+		});
+		
+		$('#signOut').click(function(){
+			firebase.auth().signOut();
+			sidebar.close();
+		});
+
+	} else 
+	{
+		$(".user-authorised").remove();
+	}
+
+	//set Map Name
+	database.ref("customMaps/"+mid+"/admin/").on('value', function(snapshot) {
+		var data = snapshot.val();
+		if(data)
+		{
+			
+			mapName = data.map;
+			mapTitle = data.title;
+			$('#mapTitle').val(mapTitle);
+			owner = data.owner;
+			
+			mk_townhall = new L.LayerGroup();
+			mk_scrap = new L.LayerGroup();
+			mk_components = new L.LayerGroup();
+			mk_salvage = new L.LayerGroup();
+			mk_fuel = new L.LayerGroup();
+			mk_supply = new L.LayerGroup();
+			mk_workshop = new L.LayerGroup();
+			mk_vehicle = new L.LayerGroup();
+			mk_medical = new L.LayerGroup();
+			mk_armory = new L.LayerGroup();
+			mk_plant = new L.LayerGroup();			
+			mk_custom = new L.LayerGroup();
+			li_custom = new L.LayerGroup();
+			lb_custom = new L.LayerGroup();
+			mk_user = new L.LayerGroup();
+			ar_custom = new L.LayerGroup();
+			lb_placenames = new L.LayerGroup();
+			
+			
+			var mapImg = new Image();
+			
+			mapImg.onload = function(){
+			southWest = L.latLng(0, 0);
+			northEast = L.latLng(mapImg.height, mapImg.width);
+			bounds = L.latLngBounds(southWest, northEast);
+
+			//map.setMaxBounds(bounds);			
+			image.setBounds(bounds);	
+			map.fitBounds(bounds);	
+			image.setUrl(mapLocation);
+
+			//User locations (like google docs, experimental)
+			database.ref("customMaps/"+mid+"/users/").on('child_added', function(snapshot) {
+				var data = snapshot.val();
+				var key = snapshot.key;
+				var anon = snapshot.hasChild("anon");
+				if(anon)
+				{
+					anonCount = anonCount+1;
+					$('#anon-list').html("<li>"+anonCount+":Unknown Soldiers</li>");
+				}
+				else
+				{				
+					var whitelist = "";						
+					var whitelisted=false;
+					
+					database.ref("customMaps/"+mid+"/admin/whitelist/"+key).once('value', function(snapshot) {
+						whitelisted = snapshot.val();					
+						var userHTML="";
+						
+						if($('#user_'+key).length==0)
+						{	
+							
+						if(uid==owner){	
+							whitelist = "<span class='pull-right icon-User-Security1 addWL' data-whitelist='"+key+"' data-whitelisted='"+whitelisted+"' title='Whitelist'></span>"	
+						}
+					
+						if(key!=uid){
+							var newMarker = L.marker([ data.y, data.x ]).addTo(mk_user);
+							mk_user.addTo(map);
+							newMarker.bindTooltip(data.name);
+							mk_user[key]=(newMarker);
+							var idleTime = (Date.now())-30000;
+							if(idleTime>data.time){
+								idleUser(key);				
+								}
+								userHTML="<li class='list-group-item' id='user_"+key+"'><span class='user-name'>"+data.name+"</span>"+whitelist+"</li>" ;	
+								if(key==owner)
+								{	
+									$( "#owner-list" ).prepend(userHTML);
+								}	
+								else
+								{
+									if(whitelisted)
+									{
+										$( "#white-list" ).append(userHTML);
+									}
+									else
+									{
+										$( "#user-list" ).append(userHTML);
+									}
+								}
+
+								
+							}
+						else
+							{	
+								youHTML="<li class='list-group-item' id='user_"+key+"'><span class='user-name'>"+data.name+"</span><span class='pull-right icon-User-Security1' title='This is You'></span></li>"
+							
+								if(uid==owner)
+								{	
+									$( "#owner-list" ).prepend(youHTML);
+								}	
+								else
+								{
+									$( "#user-list" ).prepend(youHTML);
+								}
+							}
+						}							
+					});	
+				}					
+			});
+			
+			
+			database.ref("customMaps/"+mid+"/users/").on('child_changed', function(snapshot) {
+				var data = snapshot.val();	
+				var key = snapshot.key;	
+				if(key!=uid){
+					mk_user[key].setLatLng([ data.y, data.x ]);						
+					if($( "#user_"+key).hasClass("text-muted"))
+					{
+						$( "#user_"+key).removeClass("text-muted");	
+					}
+				}
+			});
+				
+			database.ref("customMaps/"+mid+"/users/").on('child_removed', function(snapshot) {
+				var key = snapshot.key;	
+				var anon = snapshot.hasChild("anon");
+				if(anon)
+				{
+					anonCount = anonCount-1;
+					$('#anon-list').html("<li>"+anonCount+":Unknown Soldiers</li>");
+				}
+				else
+				{
+					mk_user[key].remove();		
+					$( "#user_"+key).remove();
+				}
+			});
+				
+			function idleUser(key){			
+				$( "#user_"+key).addClass("text-muted");
+				mk_user[key].remove();
+			}	
+			//White List
+
+			database.ref("customMaps/"+mid+"/admin/whitelist/").on('child_added', function(snapshot) {
+				var data = snapshot.val();	
+				var key = snapshot.key;	
+				var userHTML = $("#user_"+key).detach();
+				if(data)
+					{
+						$( "#white-list" ).append(userHTML);
+					}
+				else
+					{
+						$( "#user-list" ).append(userHTML);
+					}	
+			});
+
+			database.ref("customMaps/"+mid+"/admin/whitelist/").on('child_removed', function(snapshot) {
+				var data = snapshot.val();	
+				var key = snapshot.key;	
+				var userHTML = $("#user_"+key).detach();
+				if(data)
+					{
+					}
+				else
+					{
+						$( "#user-list" ).append(userHTML);
+					}	
+			});
+			
+			//Custom Map Layers - Areas
+			var ar_custom_ar = [];
+			
+			database.ref("customMaps/"+mid+"/areas/").on('child_added', function(snapshot) {
+				var data = snapshot.val();	
+				var key = snapshot.key;	
+				var newLine = L.polygon(data.data, {color: data.color,lineCap:'round '}).addTo(ar_custom);	
+				ar_custom.addTo(map);
+				ar_custom_ar[key]=(newLine);
+			});
+			
+			database.ref("customMaps/"+mid+"/areas/").on('child_changed', function(snapshot) {
+				var data = snapshot.val();
+				var key = snapshot.key;			
+				ar_custom_ar[key].setLatLngs(data.data);
+
+			});
+			
+			database.ref("customMaps/"+mid+"/areas/").on('child_removed', function(snapshot) {
+				var key = snapshot.key;
+				map.removeLayer(ar_custom_ar[key]);	
+				var index = ar_custom_ar.indexOf(key);		
+				if (index > -1) {
+					ar_custom_ar.splice(index, 1);
+				}
+			});
+	 
+			//Custom Map Layers - Lines
+			var li_custom_ar = [];
+			
+			database.ref("customMaps/"+mid+"/lines/").on('child_added', function(snapshot) {
+				var data = snapshot.val();	
+				var key = snapshot.key;	
+				var newLine = L.polyline(data.data, {className:key,weight:data.weight, color: data.color ,lineCap:'butt',clickable:'false',dashArray:data.dash}).addTo(li_custom);
+				li_custom.addTo(map);
+				newLine.on('mousedown', function(e){					
+					if(deleteNow)
+					{
+						database.ref("customMaps/"+mid+"/lines/"+key).remove();
+					}
+				})
+				li_custom_ar[key]=(newLine);
+			});
+			
+			database.ref("customMaps/"+mid+"/lines/").on('child_changed', function(snapshot) {
+				var data = snapshot.val();
+				var key = snapshot.key;	
+				if(key!="null"){				
+					li_custom_ar[key].setLatLngs(data.data);
+				}
+			});
+			
+			database.ref("customMaps/"+mid+"/lines/").on('child_removed', function(snapshot) {
+				var key = snapshot.key;	
+				map.removeLayer(li_custom_ar[key]);
+				var index = li_custom_ar.indexOf(key);
+				if (index > -1) {
+					li_custom_ar.splice(index, 1);
+				}
+			});
+			
+			//Custom Map Layers - Markers
+			var mk_custom_ar = [];
+			
+			database.ref("customMaps/"+mid+"/markers").on('child_added', function(snapshot) {
+				var data = snapshot.val();
+				var key = snapshot.key;			
+				var icon = eval("icon_"+data.type);
+				var newMarker = L.marker([ data.y, data.x ], {icon: icon }).addTo(mk_custom);
+				mk_custom.addTo(map);
+				newMarker.bindTooltip(data.popup);
+				newMarker.on('mousedown', function(e){					
+					if(deleteNow)
+					{
+						database.ref("customMaps/"+mid+"/markers/"+key).remove();
+					}
+				})
+				mk_custom_ar[key]=(newMarker);
+			});
+			
+			database.ref("customMaps/"+mid+"/markers").on('child_changed', function(snapshot) {
+				var data = snapshot.val();	
+				var key = snapshot.key;	
+				var icon = eval("icon_"+data.type);
+				mk_custom_ar[key].setTooltipContent(data.popup);
+				mk_custom_ar[key].setLatLng([ data.y, data.x ]);
+				mk_custom_ar[key].setIcon(icon);
+			});
+			
+			database.ref("customMaps/"+mid+"/markers").on('child_removed', function(snapshot) {
+				var key = snapshot.key;	
+				map.removeLayer(mk_custom_ar[key]);
+				var index = mk_custom_ar.indexOf(key);
+				if (index > -1) {
+					mk_custom_ar.splice(index, 1);
+				}
+			});
+			
+			//Custom Map Layers - Labels
+			var lb_custom_ar = [];
+			
+			database.ref("customMaps/"+mid+"/labels").on('child_added', function(snapshot) {
+				var data = snapshot.val();
+				var key = snapshot.key;		
+				var icon = L.divIcon({className: 'placename-label',html:'<span>'+data.placename+'</span>'});	
+				var newMarker = L.marker([ data.y, data.x ], {icon: icon }).addTo(lb_custom);
+				lb_custom.addTo(map);
+				newMarker.on('mousedown', function(e){					
+					if(deleteNow)
+					{
+						database.ref("customMaps/"+mid+"/labels/"+key).remove();
+					}
+				})
+				lb_custom_ar[key]=(newMarker);
+			});
+			
+			database.ref("customMaps/"+mid+"/labels").on('child_changed', function(snapshot) {
+				var data = snapshot.val();	
+				var key = snapshot.key;	
+				var icon = L.divIcon({className: 'placename-label',html:'<span>'+data.placename+'</span>'});					
+				lb_custom_ar[key].setLatLng([ data.y, data.x ]);
+				lb_custom_ar[key].setIcon(icon);
+			});
+			
+			database.ref("customMaps/"+mid+"/labels").on('child_removed', function(snapshot) {
+				var key = snapshot.key;	
+				map.removeLayer(lb_custom_ar[key]);
+				var index =lb_custom_ar.indexOf(key);
+				if (index > -1) {
+					lb_custom_ar.splice(index, 1);
+				}
+			});
+			
+			
+			//Base Map Layers - Markers
+			database.ref("mapBase/"+mapName+"/markers").on('child_added', function(snapshot) {
+				var data = snapshot.val();
+				var key = snapshot.key;		
+				var icon = eval("icon_"+data.type);
+				var markerAr = eval("mk_"+data.type);
+				var newMarker = L.marker([ data.y, data.x ], {icon: icon }).addTo(markerAr);
+				markerAr.addTo(map);
+				newMarker.bindTooltip(data.popup);
+				markerAr[key]=(newMarker);
+			});
+			
+			database.ref("mapBase/"+mapName+"/markers").on('child_changed', function(snapshot) {
+				var data = snapshot.val();	
+				var key = snapshot.key;	
+				var icon = eval("icon_"+data.type);
+				var markerAr = eval("mk_"+data.type);
+				markerAr[key].setTooltipContent(data.popup);
+				markerAr[key].setLatLng([ data.y, data.x ]);
+				markerAr[key].setIcon(icon);
+			});
+			
+			database.ref("mapBase/"+mapName+"/markers").on('child_removed', function(snapshot) {
+				var key = snapshot.key;	
+				map.removeLayer(markerAr[key]);
+				var index = markerAr.indexOf(key);
+				if (index > -1) {
+					markerAr.splice(index, 1);
+				}
+			});
+			
+			
+			//Base Map Layers - Labels
+			database.ref("mapBase/"+mapName+"/labels").on('child_added', function(snapshot) {
+				var data = snapshot.val();
+				var key = snapshot.key;		
+				var icon = L.divIcon({className: 'placename-label',html:'<span>'+data.placename+'</span>'});	
+				var newMarker = L.marker([ data.y, data.x ], {icon: icon }).addTo(lb_placenames);
+				lb_placenames.addTo(map);
+				lb_placenames[key]=(newMarker);
+			});
+			
+			database.ref("mapBase/"+mapName+"/labels").on('child_changed', function(snapshot) {
+				var data = snapshot.val();	
+				var key = snapshot.key;	
+				var icon = L.divIcon({className: 'placename-label',html:'<span>'+data.placename+'</span>'});					
+				lb_placenames[key].setLatLng([ data.y, data.x ]);
+				lb_placenames[key].setIcon(icon); 
+			});
+			
+			database.ref("mapBase/"+mapName+"/labels").on('child_removed', function(snapshot) {
+				var key = snapshot.key;	
+				map.removeLayer(lb_placenames[key]);
+				var index =lb_placenames.indexOf(key);
+				if (index > -1) {
+					lb_placenames.splice(index, 1);
+				}
+			});
+			}			
+			
+			var mapLocation = "images/"+mapName+".png"
+			
+			mapImg.src = mapLocation;
+			
+			if(layerControl === false) {  // var layerControl set to false in init phase; 
+				layerControl = L.control.layers().addTo(map);
+			}
+
+			
+			for (var key in overlays) {
+				// skip loop if the property is from prototype
+				if (!overlays.hasOwnProperty(key)) continue;
+					data = overlays[key]
+					layerControl.addOverlay(eval(data) , key)
+				}
+			
+		}
+		else
+		{
+		console.log("map not found ("+mid+")");
+		database.ref("users/"+uid+"/shared/"+mid).remove();
+		alert("map not found ("+mid+")");
+		window.location = 'list.html';
+		}
+	});
+	
+	}, function(error) {
+	  console.log(error);
+	});
+	
+  };
+</script>
+
+
+
+</body>
+</html>

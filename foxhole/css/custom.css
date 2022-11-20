@@ -1,0 +1,280 @@
+
+html, body, #map {
+    height: 100%;
+    width: 100%;
+    padding:0;
+    margin:0;
+    color: #fff;
+    background-color: rgba(193, 193, 193,0);
+}
+
+a, a:hover{
+        color: #E77C48;
+}
+
+a:active,a:focus{
+    color:white;
+}
+
+html {
+background-color: rgb(193, 193, 193);
+}	
+#map{
+background-repeat: no-repeat;
+background-color: rgb(193, 193, 193);
+background-image: url(../images/foxholebanner.png);
+background-position: bottom;
+background-size: contain;
+}	
+
+#footer {
+position: fixed;
+bottom: 0;
+z-index: -1;
+}
+
+#footer img	{
+width:100%;
+}		
+#labelInput {
+width: 200px;
+position: absolute;
+z-index: 999;
+top: 0;
+left: 0;
+}		
+/*
+* Index CSS
+*/	
+.authorised{
+display:none !important;
+} 
+
+#firebaseui-unauthorised{
+position: relative;
+display: block;
+}
+#firebaseui-authorised{
+display: none;
+}
+
+#firebaseui-auth-container {
+/* color: #999; */
+position: fixed;
+left: 0;
+top: 0;
+display: none;
+width: 100%;
+height: 100%;
+z-index: 1000;
+float: left;
+font-size: 14px;
+text-align: left;
+list-style: none;
+background-color: rgba(33, 33, 33, 0.69);
+}
+
+.firebaseui-container {
+background-color: #222  !important;
+margin: auto  !important;
+margin-top: 100px  !important;
+width: 100%;
+}
+
+.mdl-textfield__input {
+border: none;
+border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.mdl-textfield.is-disabled.is-disabled .mdl-textfield__label, .mdl-textfield__label, fieldset[disabled] .mdl-textfield .mdl-textfield__label {
+color: rgba(255, 255, 255, 0.26) !important;
+}
+
+.panel-default>.panel-heading {
+color: #fff;
+background-color: rgba(0, 0, 0, 0.26);
+border-color: rgba(0, 0, 0, 0);
+}
+
+.panel-footer {
+padding: 10px 15px;
+background-color: rgba(0, 0, 0, 0.26);
+border-top: 1px solid rgba(0, 0, 0, 0);
+border-bottom-right-radius: 3px;
+border-bottom-left-radius: 3px;
+}
+.on-active {
+color:#666;
+}
+
+.leaflet-control-attribution.leaflet-control {
+display: none;
+}
+
+#foxholeLogo {
+width: 200px;
+display: inline-block;
+height: 53px;
+background: transparent;
+border: 0;
+border-width: 0;
+}
+#foxholeLogo a {
+background: transparent;
+}
+
+div.leaflet-top.leaflet-right div{
+border: 0;
+}
+
+.colorpicker{
+margin:auto;
+}
+
+.mapSelect, .mapMarker, .dashPattern, .dashSize {
+color: white;
+cursor: pointer;
+border-width: 0;
+background-color: rgba(0, 0, 0, 0.34);
+}
+.mapSelect:hover, .mapMarker:hover, .dashPattern:hover , .dashSize:hover{
+background-color: rgba(255, 255, 255, 0.15);
+}
+.callahans{
+
+background-image: url(../images/callahans_sm.png);
+background-size: cover;
+}
+
+.deadlands{
+background-image: url(../images/deadlands_sm.png);
+background-size: cover;
+}
+
+.endlessshore{
+background-image: url(../images/endlessshore_sm.png);
+background-size: cover;
+}
+
+.heartlands{
+background-image: url(../images/heartlands_sm.png);
+background-size: cover;
+}
+
+.umbralwoods{
+background-image: url(../images/umbralwoods_sm.png);
+background-size: cover;
+}
+
+.farranaccoast{
+background-image: url(../images/farranaccoast_sm.png);
+background-size: cover; 
+}
+.fishermansrow{
+background-image: url(../images/fishermansrow_sm.png);
+background-size: cover; 
+}
+.mooringcounty_icons{
+background-image: url(../images/mooringcounty_icons_sm.png);
+background-size: cover; 
+}
+.reachingtrail_icons{
+background-image: url(../images/reachingtrail_icons_sm.png);
+background-size: cover; 
+}
+.tempestisland{
+background-image: url(../images/tempestisland_sm.png);
+background-size: cover;  
+}
+.weatheredexpanse{
+background-image: url(../images/weatheredexpanse_sm.png);
+background-size: cover;  
+}
+.westgate{
+background-image: url(../images/westgate_sm.png);
+background-size: cover;  
+}
+
+.icon-container{
+text-align: center;
+}
+
+.panel.panel-default, .list-group-item {
+background-color: rgba(0, 0, 0, 0.6);
+border-width: 0;
+overflow: hidden;
+}
+
+.leaflet-bar {
+box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+}
+
+.leaflet-bar a{
+background-color: rgba(0, 0, 0, 0.8);
+border-bottom: 1px solid rgba(204, 204, 204, 0.54);
+color: #ffffff;
+}
+
+.leaflet-bar a:hover {
+background-color: rgba(255, 255, 255, 0.15);
+color: #000000;
+}
+
+.leaflet-bar a.leaflet-disabled {
+background-color: rgba(197, 197, 197, 0.5);
+color: #909090;
+}
+
+.modal-content{
+color: #000000;
+}
+
+.panel.panel-default.mapSelect.active .panel-body {
+background-color: rgba(0, 0, 0, 0.4);
+background-blend-mode: color;
+}
+
+a.mapLink {
+color: white;
+font-weight: bold;
+text-decoration: none;
+text-transform: capitalize;
+width: 100%;
+display: inline-block;
+min-height: 29px;
+}
+        
+#owner-list {
+color: #ffca00;
+}
+#white-list {
+color: #ffffff;
+}
+#user-list {
+color: #999999;
+}
+
+.placename-label {
+margin-left: -50px !important;
+display: inline-block !important;
+text-align: center;
+width: 100px !important;
+height: auto !important;
+}
+
+.placename-label span {
+color: white;
+text-shadow: 0px 0px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+font-size: 14px;
+}
+
+.mapRemove {
+position: absolute;
+margin-top: -15px;
+top: 50%;
+right: 10px;
+}
+
+.mapPanel {
+position: relative;
+}
