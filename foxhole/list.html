@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>Foxhole Interactive Tactical Maps | Map</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="  crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	
+	<link rel="stylesheet" href="css/font54v1.css"/>
+	<link rel="stylesheet" href="css/colorpicker.css" />
+	<link rel="stylesheet" href="css/custom.css?version=5" />
+	
+
+	<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+
+	<script src="js/colorpicker.js"></script>
+	
+	<script>
+	  // Initialize Firebase
+	  var config = {
+		apiKey: "AIzaSyC2kdxg5u8Z7bFBO-sPEEcdKfoM4ZEL2M8",
+		authDomain: "foxhole-69465.firebaseapp.com",
+		databaseURL: "https://foxhole-69465.firebaseio.com",
+		storageBucket: "foxhole-69465.appspot.com",
+		messagingSenderId: "634491426964"
+	  };
+	  firebase.initializeApp(config);
+	</script>
+
+	
+</head>
+  <body>
+      <!-- Static navbar -->
+      <nav class="navbar navbar-inverse navbar-static-top">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Foxhole Interactive Tactical Maps</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li><a href="index.html">News</a></li>
+			  <li class="active"><a href="#">Maps</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+			<span id="firebaseui-unauthorised">
+				<button type="button" class="btn btn-default navbar-btn" id="sign-in">Sign In</button>
+				<div id="firebaseui-auth-container"></div>
+			</span>
+			<span id="firebaseui-authorised">
+				<button type="button" class="btn btn-default navbar-btn" id="sign-out">Sign Out</button>				
+			</span>
+
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+	<div class="container-fluid">
+		<div class="row"> 
+			<div class="col-sm-12 col-md-4">
+					<div class="page-header">
+					  <h3>Your Maps <br><small>(ones you have created)</small></h3>
+					</div>
+					<p><button id="newMap" type="button" class="btn btn-success btn-lg btn-block">Create a New Map</button></p>
+					<span id="yourMaps"></span>
+				
+			</div>
+			<div class="col-sm-12 col-md-4">				
+					<div class="page-header">
+					  <h3>Shared Maps <br><small>(ones you have admin in)</small></h3>
+					</div>
+					<span id="sharedMaps"></span>
+				
+			</div>
+			<div class="col-sm-12 col-md-4">
+					<div class="page-header">
+					  <h3>Recent Maps <br><small>(ones you have visited)</small></h3>
+					</div>			
+					<span id="recentMaps"></span>	
+					
+				
+			</div>
+		</div>
+	</div>
+	<div id="footer"><img src="images/foxholebanner.png"></div>
+	
+	<!-- New map modal -->
+	<div class="modal fade" id="newMap-modal" tabindex="-1" role="dialog" aria-labelledby="newMapModal">
+	  <div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Create a new map.</h4>
+			</div>
+			<div class="modal-body">
+				<div class="input-group">
+				  <span class="input-group-addon" id="basic-addon1">Title</span>
+				  <input id="newMapTitle" type="text" class="form-control" placeholder="..." aria-describedby="basic-addon1">
+				</div>	
+				<p>
+						Regions
+				</p>
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="callahans">
+					  <div class="panel-body callahans">
+						Callahan's Passage
+					  </div>					  
+					</div>
+				</p>
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="deadlands">
+					  <div class="panel-body deadlands">
+						The Deadlands
+					  </div>					  
+					</div>
+				</p>
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="endlessshore">
+					  <div class="panel-body endlessshore">
+						Endless Shore
+					  </div>					  
+					</div>
+				</p>
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="farranaccoast">
+					  <div class="panel-body farranaccoast">
+						Farranac Coast
+					  </div>					  
+					</div>
+				</p>
+				
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="heartlands">
+					  <div class="panel-body heartlands">
+						Upper Heartlands
+					  </div>					  
+					</div>
+				</p>
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="mooringcounty_icons">
+					  <div class="panel-body mooringcounty_icons">
+						Mooring County
+					  </div>					  
+					</div>
+				</p>				
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="umbralwoods">
+					  <div class="panel-body umbralwoods">
+						Umbral Woods
+					  </div>					  
+					</div>
+				</p>
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="weatheredexpanse">
+					  <div class="panel-body weatheredexpanse">
+						Weathered Expanse
+					  </div>					  
+					</div>
+				</p>
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="westgate">
+					  <div class="panel-body westgate">
+						Westgate
+					  </div>					  
+					</div>
+				</p>
+						Skirmish
+				</p>
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="fishermansrow">
+					  <div class="panel-body fishermansrow">
+						Fisherman's Row
+					  </div>					  
+					</div>
+				</p>	
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="reachingtrail_icons">
+					  <div class="panel-body reachingtrail_icons">
+						Reaching Trail
+					  </div>					  
+					</div>
+				</p>
+				<p>				
+					<div class="panel panel-default mapSelect" data-map="tempestisland">
+					  <div class="panel-body tempestisland">
+						Tempest Island
+					  </div>					  
+					</div>
+				</p>
+				<p>
+					<button id="createMap" type="button" class="btn btn-success btn-lg btn-block">Submit</button>
+				</p>
+			</div>
+			
+			
+			
+		</div>
+	  </div>
+	</div>
+
+
+    <script type="text/javascript">	
+		firebase.auth().onAuthStateChanged(function(user) {
+			if(user) 
+			{		
+				//Auth
+				$('#firebaseui-unauthorised').hide();
+				$('#firebaseui-authorised').show();
+				var displayName = user.displayName;
+				if(displayName){console.log(displayName)}else{console.log('no name!')}
+				var photoURL = user.photoURL;
+				var userCount = 0;
+				var uid = user.uid;
+				$('#sign-out').click(function(e){
+				  e.preventDefault();
+				  e.stopPropagation();
+				  $('#firebaseui-authorised').hide();
+				  $('#firebaseui-unauthorised').show();
+				  firebase.auth().signOut();
+				});
+				
+				//HTML Templates
+				
+				function mapHTML(key,data){	
+					var deleteMap ='';
+					
+					if(!data.owner){
+						deleteMap = ''
+							+'<button id="'+key+'" type="button" class="mapRemove btn btn-danger btn-sm">'
+							+'	<span class="icon-Trashcan" aria-hidden="true"></span>'
+							+'</button>';
+						
+					}
+				
+					var html = ''						
+						+'<div id="map_'+key+'" class="panel panel-default mapPanel" data-map="'+data.map+'">'
+						+'		<a class="mapLink" href="map.html?map='+key+'">'
+						+'	  <div class="panel-body '+data.map+'">'
+						+'			'+data.title+''
+						+'	  </div>'
+						+'		</a>'
+						+'          '+deleteMap+''							
+						+'</div>';
+
+				
+					return html;
+				}
+				
+				//Functions
+				
+				$('#newMap').click(function(e){		
+					$('#createMap').hide();				
+					$('#newMap-modal').modal("show");								
+				});
+				
+				$('div.mapSelect').click(function(){				
+					$('div.mapSelect').removeClass("active");
+					$(this).addClass("active");
+					mapname = $(this).data('map');	
+					$('#createMap').show();
+				});
+				
+				$('#yourMaps').on('click','.mapRemove',function(){	
+					if (confirm('Delete this map?')) {	
+						var key = this.id;				
+						database.ref("customMaps/"+key).remove();
+						database.ref("users/"+uid+"/maps/"+key).remove();
+					} 
+
+				});
+				
+				$('#createMap').click(function(e){
+					maptitle = $('#newMapTitle').val();										
+					if(maptitle&&mapname){					
+						database.ref("customMaps").push({"admin":{"map":mapname,"title":maptitle,"owner":uid}}).then((snap) => {
+							key = snap.key 
+							database.ref("users/"+uid+"/maps/"+key).set({"map":mapname,"title":maptitle});
+						});	
+						$('#newMap-modal').modal("hide");
+						$('div.mapSelect').removeClass("active");
+						$('#createMap').hide();	
+					}else
+					{
+						alert("something went wrong");
+					}
+					
+				});												
+				
+				//Data
+				var database = firebase.database();
+				var mapname;
+				var maptitle;				
+				
+				//Data - Your Maps
+				database.ref("users/"+uid+"/maps/").on('child_added', function(snapshot) {
+					var data = snapshot.val();
+					var key = snapshot.key;				
+					var html = mapHTML(key,data);			
+					$('#yourMaps').prepend(html);				
+				});
+				
+				database.ref("users/"+uid+"/maps/").on('child_removed', function(snapshot) {
+					var key = snapshot.key;			
+					$('#map_'+key).remove();				
+				});
+				
+				//Data - Shared Maps
+				database.ref("users/"+uid+"/shared/").on('child_added', function(snapshot) {
+					var data = snapshot.val();
+					var key = snapshot.key;				
+					var html = mapHTML(key,data);					
+					$('#sharedMaps').prepend(html);	
+				});
+				
+				database.ref("users/"+uid+"/shared/").on('child_removed', function(snapshot) {
+					var key = snapshot.key;			
+					$('#map_'+key).remove();				
+				});
+				
+				//Data - Recent Maps
+				database.ref("users/"+uid+"/recent/").on('child_added', function(snapshot) {
+					var data = snapshot.val();
+					var key = snapshot.key;					
+					var html = mapHTML(key,data);							
+					$('#recentMaps').prepend(html);					
+				});
+				
+				database.ref("users/"+uid+"/recent/").on('child_removed', function(snapshot) {
+				var key = snapshot.key;			
+				$('#map_'+key).remove();				
+				});
+								
+				
+			}
+			else
+			{
+				window.location.replace("index.html");
+			}	
+		});
+    </script>	
+</body>
+</html>
